@@ -1,0 +1,239 @@
+CREATE DATABASE IF NOT EXISTS pizzeria;
+
+USE pizzeria;
+
+-- #1 
+CREATE TABLE IF NOT EXISTS CLIENTES(
+	id_cliente INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	nombre_cliente VARCHAR(50) NOT NULL,
+    direccion VARCHAR(120) NOT NULL,
+    localidad VARCHAR(60) NOT NULL,
+    telefono VARCHAR (20) NOT NULL
+);
+
+-- #2 
+CREATE TABLE IF NOT EXISTS TIPOS_INSUMOS(
+	id_tipo_insumo INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	nombre_tipo VARCHAR(15) NOT NULL
+);
+
+-- #3
+CREATE TABLE IF NOT EXISTS INSUMOS(
+	id_insumo INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	nombre VARCHAR(50) NOT NULL,
+	unidad VARCHAR(30) NOT NULL,
+    id_tipo_insumo INT NOT NULL,
+    FOREIGN KEY  (id_tipo_insumo)
+		REFERENCES tipos_insumos(id_tipo_insumo)
+    
+);
+
+-- #4
+CREATE TABLE IF NOT EXISTS PROVEEDORES(
+	id_proveedor INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    direccion VARCHAR(60),
+    telefono VARCHAR(20)
+);
+
+-- #5
+CREATE TABLE IF NOT EXISTS COMPRAS(
+	id_compra INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+    id_proveedor INT NOT NULL,
+    fecha_compra DATETIME NOT NULL,
+    monto_total DECIMAL(9,2),
+	FOREIGN KEY (id_proveedor)
+		REFERENCES proveedores(id_proveedor)
+			ON DELETE CASCADE
+            ON UPDATE CASCADE
+);
+
+-- #6
+CREATE TABLE IF NOT EXISTS COMPRAS_INSUMOS(
+	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	id_compra INT NOT NULL,
+    id_insumo INT NOT NULL,
+    cantidad DECIMAL(9,2) NOT NULL,
+    precio_x_unidad DECIMAL(9,2) NOT NULL,
+	FOREIGN KEY (id_compra)
+		REFERENCES compras(id_compra)
+			ON DELETE CASCADE
+            ON UPDATE CASCADE,
+	FOREIGN KEY (id_insumo)
+		REFERENCES insumos(id_insumo)
+			ON DELETE CASCADE
+            ON UPDATE CASCADE
+);
+
+-- #7
+CREATE TABLE IF NOT EXISTS TIPOS_PREPIZZAS(
+	id_tipo_prepizza INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	nombre VARCHAR(30) NOT NULL
+);
+
+-- #8
+CREATE TABLE IF NOT EXISTS TIPOS_PREPIZZAS_INSUMOS(
+	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	id_tipo_prepizza INT NOT NULL,
+    id_insumo INT NOT NULL,
+    cantidad DECIMAL(9,2) NOT NULL,
+    FOREIGN KEY (id_tipo_prepizza)
+		REFERENCES tipos_prepizzas(id_tipo_prepizza)
+			ON DELETE CASCADE
+            ON UPDATE CASCADE,
+	FOREIGN KEY (id_insumo)
+		REFERENCES insumos(id_insumo)
+			ON DELETE CASCADE
+            ON UPDATE CASCADE
+);
+
+-- #9
+CREATE TABLE IF NOT EXISTS SABORES(
+	id_sabor INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50)
+);
+
+-- #10
+CREATE TABLE IF NOT EXISTS SABORES_INSUMOS(
+	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	id_sabor INT NOT NULL,
+    id_insumo INT NOT NULL,
+    cantidad DECIMAL(9,2) NOT NULL,
+    FOREIGN KEY (id_sabor)
+		REFERENCES sabores(id_sabor)
+			ON DELETE CASCADE
+            ON UPDATE CASCADE,
+	FOREIGN KEY (id_insumo)
+		REFERENCES insumos(id_insumo)
+			ON DELETE CASCADE
+            ON UPDATE CASCADE
+);
+
+-- #11
+CREATE TABLE IF NOT EXISTS PRODUCTOS(
+	id_producto INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,	
+    id_tipo_prepizza INT NOT NULL,
+	id_sabor INT NOT NULL,
+    nombre VARCHAR(50) NOT NULL,
+    descripcion VARCHAR(120) NOT NULL,
+	FOREIGN KEY (id_tipo_prepizza)
+	REFERENCES tipos_prepizzas(id_tipo_prepizza)
+			ON DELETE CASCADE
+            ON UPDATE CASCADE,
+    FOREIGN KEY (id_sabor)
+		REFERENCES sabores(id_sabor)
+			ON DELETE CASCADE
+            ON UPDATE CASCADE
+);
+
+-- #12
+CREATE TABLE IF NOT EXISTS ACCESORIOS_CANTIDAD(
+	id_unique INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id_insumo INT NOT NULL,
+    cantidad DECIMAL(9,2),
+    FOREIGN KEY (id_insumo)
+		REFERENCES insumos(id_insumo)
+			ON DELETE CASCADE
+            ON UPDATE CASCADE
+);
+
+-- #13
+CREATE TABLE IF NOT EXISTS ACTUALIZACIONES_PRECIOS(
+	id_actualizacion_precio INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	fecha_actualizacion_precio TIMESTAMP NOT NULL
+);
+
+-- #14
+CREATE TABLE IF NOT EXISTS ACTUALIZACIONES_PRECIOS_PRODUCTOS(
+	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	id_actualizacion_precio INT NOT NULL,
+	id_producto INT NOT NULL,
+    nuevo_precio DECIMAL(9,2) NOT NULL,
+    es_precio_actual TINYINT NOT NULL DEFAULT 1,
+	FOREIGN KEY (id_actualizacion_precio)
+		REFERENCES actualizaciones_precios(id_actualizacion_precio)
+			ON DELETE CASCADE
+            ON UPDATE CASCADE,
+	FOREIGN KEY (id_producto)
+		REFERENCES productos(id_producto)
+			ON DELETE CASCADE
+            ON UPDATE CASCADE
+);
+
+-- #15
+CREATE TABLE IF NOT EXISTS PEDIDOS(
+	id_pedido INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+    id_cliente INT NOT NULL,
+    descuento DECIMAL(9,2) NOT NULL,
+    monto_final DECIMAL(9,2) NOT NULL,
+	fecha_pedido DATETIME NOT NULL,
+	estado TINYINT NOT NULL DEFAULT 0,
+	FOREIGN KEY (id_cliente)
+		REFERENCES clientes(id_cliente)
+			ON DELETE CASCADE
+            ON UPDATE CASCADE
+);
+
+-- #16
+CREATE TABLE IF NOT EXISTS PEDIDOS_PRODUCTOS(
+	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+    id_pedido INT NOT NULL,
+    id_producto INT NOT NULL,
+    cantidad INT NOT NULL,
+    FOREIGN KEY (id_pedido)
+		REFERENCES pedidos(id_pedido)
+			ON DELETE CASCADE
+            ON UPDATE CASCADE,
+	FOREIGN KEY (id_producto)
+		REFERENCES productos(id_producto)
+			ON DELETE CASCADE
+            ON UPDATE CASCADE
+);
+
+-- #17
+CREATE TABLE IF NOT EXISTS DELIVERYS(
+	id_delivery INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    telefono VARCHAR(20) NOT NULL
+);
+
+-- #18
+CREATE TABLE IF NOT EXISTS VEHICULOS(
+	id_vehiculo INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+    clase VARCHAR(20) NOT NULL,
+    descripcion VARCHAR(60) NOT NULL,
+	patente VARCHAR(20)
+);
+
+-- #19
+CREATE TABLE IF NOT EXISTS ENTREGAS(
+	id_entrega INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	id_delivery INT NOT NULL,
+	id_vehiculo INT NOT NULL,
+    fecha_hora_entrega DATETIME NOT NULL,
+    
+	FOREIGN KEY (id_vehiculo)
+		REFERENCES vehiculos(id_vehiculo)
+			ON DELETE CASCADE
+            ON UPDATE CASCADE,
+	FOREIGN KEY (id_delivery)
+		REFERENCES deliverys(id_delivery)
+			ON DELETE CASCADE
+            ON UPDATE CASCADE
+);
+
+-- #20
+CREATE TABLE IF NOT EXISTS ENTREGAS_PRODUCTOS(
+	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	id_entrega INT NOT NULL,
+	id_pedido INT NOT NULL,
+	FOREIGN KEY (id_entrega)
+		REFERENCES entregas(id_entrega)
+			ON DELETE CASCADE
+            ON UPDATE CASCADE,
+	FOREIGN KEY (id_pedido)
+		REFERENCES pedidos(id_pedido)
+			ON DELETE CASCADE
+            ON UPDATE CASCADE
+);
+
