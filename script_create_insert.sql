@@ -10,15 +10,16 @@ CREATE TABLE IF NOT EXISTS CLIENTES(
     telefono VARCHAR (20) NOT NULL
 );
 
--- #3
+-- #2
 CREATE TABLE IF NOT EXISTS INSUMOS(
 	id_insumo INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	nombre VARCHAR(50) NOT NULL,
 	unidad VARCHAR(30) NOT NULL,
-    tipo VARCHAR(15) NOT NULL
+    tipo VARCHAR(15) NOT NULL,
+    costo DECIMAL
 );
 
--- #4
+-- #3
 CREATE TABLE IF NOT EXISTS PROVEEDORES(
 	id_proveedor INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
@@ -26,7 +27,7 @@ CREATE TABLE IF NOT EXISTS PROVEEDORES(
     telefono VARCHAR(20) UNIQUE
 );
 
--- #5
+-- #4
 CREATE TABLE IF NOT EXISTS COMPRAS(
 	id_compra INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
     id_proveedor INT NOT NULL,
@@ -38,7 +39,7 @@ CREATE TABLE IF NOT EXISTS COMPRAS(
             ON UPDATE CASCADE
 );
 
--- #6
+-- #5
 CREATE TABLE IF NOT EXISTS COMPRAS_INSUMOS(
 	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	id_compra INT NOT NULL,
@@ -56,20 +57,20 @@ CREATE TABLE IF NOT EXISTS COMPRAS_INSUMOS(
             ON UPDATE CASCADE
 );
 
--- #7
+-- #6
 CREATE TABLE IF NOT EXISTS TIPOS_PREPIZZAS(
 	id_tipo_prepizza INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	nombre_tipo VARCHAR(30) NOT NULL
 );
 
 
--- #8
+-- #7
 CREATE TABLE IF NOT EXISTS TIPOS_PREPIZZAS_INSUMOS(
 	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	id_tipo_prepizza INT NOT NULL,
     id_insumo INT NOT NULL,
-    CONSTRAINT UNIQUE(id_tipo_prepizza , id_insumo),
     cantidad DECIMAL(9,5) NOT NULL,
+    CONSTRAINT UNIQUE(id_tipo_prepizza , id_insumo),
     FOREIGN KEY (id_tipo_prepizza)
 		REFERENCES tipos_prepizzas(id_tipo_prepizza)
 			ON DELETE CASCADE
@@ -80,13 +81,13 @@ CREATE TABLE IF NOT EXISTS TIPOS_PREPIZZAS_INSUMOS(
             ON UPDATE CASCADE
 );
 
--- #9
+-- #8
 CREATE TABLE IF NOT EXISTS SABORES(
 	id_sabor INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50)
 );
 
--- #10
+-- #9
 CREATE TABLE IF NOT EXISTS SABORES_INSUMOS(
 	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	id_sabor INT NOT NULL,
@@ -103,13 +104,14 @@ CREATE TABLE IF NOT EXISTS SABORES_INSUMOS(
             ON UPDATE CASCADE
 );
 
--- #11
+-- #10
 CREATE TABLE IF NOT EXISTS PRODUCTOS(
 	id_producto INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,	
     id_tipo_prepizza INT NOT NULL,
 	id_sabor INT NOT NULL,
     nombre VARCHAR(50) NOT NULL,
     descripcion VARCHAR(120) NOT NULL,
+    precio INT,
 	FOREIGN KEY (id_tipo_prepizza)
 	REFERENCES tipos_prepizzas(id_tipo_prepizza)
 			ON DELETE CASCADE
@@ -120,7 +122,7 @@ CREATE TABLE IF NOT EXISTS PRODUCTOS(
             ON UPDATE CASCADE
 );
 
--- #12
+-- #11
 CREATE TABLE IF NOT EXISTS ACCESORIOS_CANTIDAD(
 	id_unique INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     id_insumo INT NOT NULL,
@@ -131,31 +133,21 @@ CREATE TABLE IF NOT EXISTS ACCESORIOS_CANTIDAD(
             ON UPDATE CASCADE
 );
 
--- #13
-CREATE TABLE IF NOT EXISTS ACTUALIZACIONES_PRECIOS(
-	id_actualizacion_precio INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	fecha DATETIME NOT NULL
-);
-
--- #14
+-- #12
 CREATE TABLE IF NOT EXISTS ACTUALIZACIONES_PRECIOS_PRODUCTOS(
 	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	id_actualizacion_precio INT NOT NULL,
+	fecha DATE NOT NULL,
 	id_producto INT NOT NULL,
     nuevo_precio DECIMAL(9,2) NOT NULL,
     es_precio_actual TINYINT NOT NULL DEFAULT 1,
-	CONSTRAINT UNIQUE(id_actualizacion_precio , id_producto),
-	FOREIGN KEY (id_actualizacion_precio)
-		REFERENCES actualizaciones_precios(id_actualizacion_precio)
-			ON DELETE CASCADE
-            ON UPDATE CASCADE,
+
 	FOREIGN KEY (id_producto)
 		REFERENCES productos(id_producto)
 			ON DELETE CASCADE
             ON UPDATE CASCADE
 );
 
--- #15
+-- #13
 CREATE TABLE IF NOT EXISTS PEDIDOS(
 	id_pedido INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
     id_cliente INT NOT NULL,
@@ -170,7 +162,7 @@ CREATE TABLE IF NOT EXISTS PEDIDOS(
             ON UPDATE CASCADE
 );
 
--- #16
+-- #14
 CREATE TABLE IF NOT EXISTS PEDIDOS_PRODUCTOS(
 	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
     id_pedido INT NOT NULL,
@@ -187,14 +179,15 @@ CREATE TABLE IF NOT EXISTS PEDIDOS_PRODUCTOS(
             ON UPDATE CASCADE
 );
 
--- #17
+-- #15
 CREATE TABLE IF NOT EXISTS DELIVERYS(
 	id_delivery INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
     telefono VARCHAR(20) NOT NULL UNIQUE
+    
 );
 
--- #18
+-- #16
 CREATE TABLE IF NOT EXISTS VEHICULOS(
 	id_vehiculo INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
     clase VARCHAR(20) NOT NULL,
@@ -202,7 +195,7 @@ CREATE TABLE IF NOT EXISTS VEHICULOS(
 	patente VARCHAR(20) UNIQUE
 );
 
--- #19
+-- #17
 CREATE TABLE IF NOT EXISTS ENTREGAS(
 	id_entrega INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	id_delivery INT NOT NULL,
@@ -220,7 +213,7 @@ CREATE TABLE IF NOT EXISTS ENTREGAS(
             ON UPDATE CASCADE
 );
 
--- #20
+-- #18
 CREATE TABLE IF NOT EXISTS ENTREGAS_PEDIDOS(
 	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	id_entrega INT NOT NULL,
@@ -314,31 +307,31 @@ insert into clientes (id_cliente, nombre, direccion, telefono) values (70, 'Nata
 
 -- (2) INSUMOS
 
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (1,'leche','litros',"ingrediente");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (2,'huevos','unidades',"ingrediente");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (3,'muzzarela','kg',"ingrediente");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (4,'jamon','kg',"ingrediente");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (5,'salchicha','paquetes de 6',"ingrediente");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (6,'atun','lata de 130 gramos',"ingrediente");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (7,'aceitunas verdes','kg',"ingrediente");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (8,'salame','kg',"ingrediente");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (9,'salsa de tomate','litros',"ingrediente");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (10,'oregano','kg',"ingrediente");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (11,'sal','kg',"ingrediente");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (12,'azucar','kg',"ingrediente");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (13,'cebolla','kg',"ingrediente");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (14,'tomate','kg',"ingrediente");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (15,'morron','kg',"ingrediente");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (16,'rucula','kg',"ingrediente");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (17,'queso rallado','kg',"ingrediente");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (18,'levadura','kg',"ingrediente");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (19,'longaniza','kg',"ingrediente");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (20,'harina','kg',"ingrediente");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (21,'aceite de oliva','botella 1 litros',"ingrediente");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (22,'palmitos','kg',"ingrediente");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (23,'cajas','unidades',"accesorio");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (24,'mesita de plastico','kg',"accesorio");
-INSERT INTO insumos (id_insumo,nombre,unidad,tipo) VALUES (25,'papel interior','kg',"accesorio");
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (1,'leche','litros',1,350);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (2,'huevos','unidades',1,20);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (3,'muzzarela','kg',1,2200);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (4,'jamon','kg',1,3650);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (5,'salchicha','paquetes de 6',1,230);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (6,'aceitunas','kg',1,1210);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (7,'salame','kg',1,210);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (8,'salsa de tomate','litros',1,370);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (9,'oregano','kg',1,2390);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (10,'sal','kg',1,270);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (11,'azucar','kg',1,450);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (12,'cebolla','kg',1,600);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (13,'tomate','kg',1,400);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (14,'morron','kg',1,200);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (15,'rucula','kg',1,890);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (16,'queso rallado','kg',1,3200);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (17,'levadura','kg',1,760);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (18,'longaniza','kg',1,4250);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (19,'harina','kg',1,320);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (20,'aceite de oliva','botella 1 litros',1,1050);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (21,'palmitos','lata de 800 gr',1,3600);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (22,'cajas','unidades',2,45);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (23,'mesita de plastico','kg',2,840);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (24,'papel interior','kg',2,950);
+
 
 -- (3) PROVEEDORES
 
@@ -359,50 +352,50 @@ INSERT INTO compras(id_compra,id_proveedor,fecha) VALUES (7,4,'2022-12-01 12:00:
 
 -- (5) COMPRAS INSUMOS
 
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (1,1,1,'6',300);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (2,1,2,'24',20);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (3,1,3,'3',2200);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (4,1,4,'2',3600);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (5,1,5,'6',200);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (6,1,6,'4',130);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (7,1,7,'1',1200);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (8,1,8,'10',200);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (9,1,9,'2',360);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (10,2,10,'1',2380);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (11,2,11,'1',250);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (12,2,12,'1',400);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (13,2,13,'1',600);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (14,2,14,'4',400);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (15,2,15,'3',200);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (16,2,16,'2',890);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (17,3,17,'1',3200);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (18,3,18,'1',760);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (19,3,19,'0.5',4250);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (20,3,20,'5',300);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (21,3,21,'1',1000);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (22,3,22,'1',3500);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (23,3,23,'100',40);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (24,3,24,'1',846);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (25,3,25,'1',951);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (26,4,1,'5',350);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (27,4,4,'1000',3650);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (28,4,5,'4',230);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (29,4,13,'2',600);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (30,5,7,'1',1210);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (31,5,8,'10',210);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (32,5,9,'2',370);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (33,5,10,'1',2390);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (34,5,11,'1',270);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (35,5,12,'1',450);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (36,6,21,'1',1100);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (37,6,22,'1',3550);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (38,6,23,'100',45);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (39,6,24,'1',850);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (40,6,25,'1',1000);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (41,7,20,'2',320);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (42,7,21,'1',1050);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (43,7,22,'1',3600);
-INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (44,7,23,'100',45);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (1,1,1,6,300);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (2,1,2,24,20);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (3,1,3,3,2200);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (4,1,4,2,3600);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (5,1,5,6,200);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (7,1,6,1,1200);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (8,1,7,10,200);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (9,1,8,2,360);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (10,2,9,1,2380);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (11,2,10,1,250);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (12,2,11,1,400);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (13,2,12,1,600);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (14,2,13,4,400);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (15,2,14,3,200);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (16,2,15,2,890);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (17,3,16,1,3200);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (18,3,17,1,760);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (19,3,18,0.5,4250);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (20,3,19,5,300);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (21,3,20,1,1000);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (22,3,21,1,3500);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (23,3,22,100,40);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (24,3,23,1,846);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (25,3,24,1,951);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (26,4,1,5,350);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (27,4,4,1000,3650);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (28,4,5,4,230);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (29,4,12,2,600);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (30,5,6,1,1210);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (31,5,7,10,210);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (32,5,8,2,370);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (33,5,9,1,2390);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (34,5,10,1,270);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (35,5,11,1,450);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (36,6,20,1,1100);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (37,6,21,1,3550);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (38,6,22,100,45);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (39,6,23,1,850);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (40,6,24,1,1000);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (41,7,19,2,320);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (42,7,20,1,1050);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (43,7,21,1,3600);
+INSERT INTO compras_insumos(id_unique,id_compra,id_insumo,cantidad,precio_x_unidad) VALUES (44,7,22,100,45);
+
 
 -- (6) TIPOS PREPIZZAS INSUMOS
 
@@ -411,16 +404,18 @@ INSERT INTO tipos_prepizzas(id_tipo_prepizza, nombre_tipo) VALUES (2,'Rellena');
 
 -- (7) TIPOS PREPIZZAS INSUMOS
 
-INSERT INTO tipos_prepizzas_insumos(id_unique,id_tipo_prepizza,id_insumo,cantidad) VALUES (1,1,9,0.001);
+INSERT INTO tipos_prepizzas_insumos(id_unique,id_tipo_prepizza,id_insumo,cantidad) VALUES (1,1,8,0.001);
 INSERT INTO tipos_prepizzas_insumos(id_unique,id_tipo_prepizza,id_insumo,cantidad) VALUES (2,1,3,0.25);
-INSERT INTO tipos_prepizzas_insumos(id_unique,id_tipo_prepizza,id_insumo,cantidad) VALUES (3,1,20,0.25);
-INSERT INTO tipos_prepizzas_insumos(id_unique,id_tipo_prepizza,id_insumo,cantidad) VALUES (4,1,11,0.00025);
-INSERT INTO tipos_prepizzas_insumos(id_unique,id_tipo_prepizza,id_insumo,cantidad) VALUES (5,1,18,0.0125);
-INSERT INTO tipos_prepizzas_insumos(id_unique,id_tipo_prepizza,id_insumo,cantidad) VALUES (6,2,9,0.001);
-INSERT INTO tipos_prepizzas_insumos(id_unique,id_tipo_prepizza,id_insumo,cantidad) VALUES (7,2,3,0.5);
-INSERT INTO tipos_prepizzas_insumos(id_unique,id_tipo_prepizza,id_insumo,cantidad) VALUES (8,2,20,0.5);
-INSERT INTO tipos_prepizzas_insumos(id_unique,id_tipo_prepizza,id_insumo,cantidad) VALUES (9,2,11,0.0005);
-INSERT INTO tipos_prepizzas_insumos(id_unique,id_tipo_prepizza,id_insumo,cantidad) VALUES (10,2,18,0.02);
+INSERT INTO tipos_prepizzas_insumos(id_unique,id_tipo_prepizza,id_insumo,cantidad) VALUES (3,1,19,0.25);
+INSERT INTO tipos_prepizzas_insumos(id_unique,id_tipo_prepizza,id_insumo,cantidad) VALUES (4,1,10,0.00025);
+INSERT INTO tipos_prepizzas_insumos(id_unique,id_tipo_prepizza,id_insumo,cantidad) VALUES (5,1,17,0.0125);
+INSERT INTO tipos_prepizzas_insumos(id_unique,id_tipo_prepizza,id_insumo,cantidad) VALUES (6,1,9,0.0001);
+INSERT INTO tipos_prepizzas_insumos(id_unique,id_tipo_prepizza,id_insumo,cantidad) VALUES (7,2,8,0.001);
+INSERT INTO tipos_prepizzas_insumos(id_unique,id_tipo_prepizza,id_insumo,cantidad) VALUES (8,2,3,0.5);
+INSERT INTO tipos_prepizzas_insumos(id_unique,id_tipo_prepizza,id_insumo,cantidad) VALUES (9,2,19,0.5);
+INSERT INTO tipos_prepizzas_insumos(id_unique,id_tipo_prepizza,id_insumo,cantidad) VALUES (10,2,10,0.0005);
+INSERT INTO tipos_prepizzas_insumos(id_unique,id_tipo_prepizza,id_insumo,cantidad) VALUES (11,2,17,0.02);
+INSERT INTO tipos_prepizzas_insumos(id_unique,id_tipo_prepizza,id_insumo,cantidad) VALUES (12,2,9,0.0001);
 
 -- (8) SABORES
 
@@ -436,88 +431,83 @@ INSERT INTO sabores(id_sabor,nombre) VALUES (9,'Salame');
 
 -- (9) SABORES INSUMOS
 
-INSERT INTO sabores_insumos(id_sabor,id_insumo,cantidad) VALUES (1,2,0.5);
-INSERT INTO sabores_insumos(id_sabor,id_insumo,cantidad) VALUES (2,3,0.15);
-INSERT INTO sabores_insumos(id_sabor,id_insumo,cantidad) VALUES (3,4,0.15);
-INSERT INTO sabores_insumos(id_sabor,id_insumo,cantidad) VALUES (3,15,0.3);
-INSERT INTO sabores_insumos(id_sabor,id_insumo,cantidad) VALUES (4,5,2);
-INSERT INTO sabores_insumos(id_sabor,id_insumo,cantidad) VALUES (5,6,0.5);
-INSERT INTO sabores_insumos(id_sabor,id_insumo,cantidad) VALUES (6,8,0.5);
-INSERT INTO sabores_insumos(id_sabor,id_insumo,cantidad) VALUES (7,9,0.1);
-INSERT INTO sabores_insumos(id_sabor,id_insumo,cantidad) VALUES (8,7,0.3);
+INSERT INTO sabores_insumos(id_unique,id_sabor,id_insumo,cantidad) VALUES (1,2,13,0.5);
+INSERT INTO sabores_insumos(id_unique,id_sabor,id_insumo,cantidad) VALUES (2,3,15,0.15);
+INSERT INTO sabores_insumos(id_unique,id_sabor,id_insumo,cantidad) VALUES (3,4,4,0.15);
+INSERT INTO sabores_insumos(id_unique,id_sabor,id_insumo,cantidad) VALUES (4,4,14,0.3);
+INSERT INTO sabores_insumos(id_unique,id_sabor,id_insumo,cantidad) VALUES (5,5,2,2);
+INSERT INTO sabores_insumos(id_unique,id_sabor,id_insumo,cantidad) VALUES (6,6,21,0.5);
+INSERT INTO sabores_insumos(id_unique,id_sabor,id_insumo,cantidad) VALUES (7,7,12,0.3);
+INSERT INTO sabores_insumos(id_unique,id_sabor,id_insumo,cantidad) VALUES (8,8,5,0.5);
+INSERT INTO sabores_insumos(id_unique,id_sabor,id_insumo,cantidad) VALUES (9,9,7,0.1);
 
 -- (10) PRODUCTOS
 
-INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion) VALUES (1,1,1,'Muzzarella Clasica','Pizza clasica de muzzarella de 8 porciones');
-INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion) VALUES (2,1,2,'Napolitana Clasica','Pizza clasica de tomate de 8 porciones');
-INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion) VALUES (3,1,3,'Rucula Clasica','Pizza clasica de Rucula de 8 porciones');
-INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion) VALUES (4,1,4,'Jamon y Morron Clasica','Pizza clasica de jamon y morron de 8 porciones');
-INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion) VALUES (5,1,5,'Huevo Clasica','Pizza clasica de huevo de 8 porciones');
-INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion) VALUES (6,1,6,'Palmitos Clasica','Pizza clasica de palmitos de 8 porciones');
-INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion) VALUES (7,1,7,'Fugazza Clasica','Pizza clasica de cebolla de 8 porciones');
-INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion) VALUES (8,1,8,'Salchicha Clasica','Pizza clasica de salchica de 8 porciones');
-INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion) VALUES (9,1,9,'Salame Clasica','Pizza clasica de salame de 8 porciones');
-INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion) VALUES (10,2,1,'Muzzarella Rellena','Pizza rellena con capa interior de muzzarella extra. Seis porciones abundantes');
-INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion) VALUES (11,2,2,'Napolitana Rellena','Pizza de tomate rellena con capa interior de muzzarella extra. Seis porciones abundantes');
-INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion) VALUES (12,2,3,'Rucula Rellena','Pizza de rucula rellena con capa interior de muzzarella extra. Seis porciones abundantes');
-INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion) VALUES (13,2,4,'Jamon y Morron Rellena','Pizza de jamon y morron rellena con capa interior de muzzarella extra. Seis porciones abundantes');
-INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion) VALUES (14,2,5,'Huevo Rellena','Pizza de huevo rellena con capa interior de muzzarella extra. Seis porciones abundantes');
-INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion) VALUES (15,2,6,'Palmitos Rellena','Pizza de palmitos rellena con capa interior de muzzarella extra. Seis porciones abundantes');
-INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion) VALUES (16,2,7,'Fugazza Rellena','Pizza de cebolla rellena con capa interior de muzzarella extra. Seis porciones abundantes');
-INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion) VALUES (17,2,8,'Salchicha Rellena','Pizza de salchica rellena con capa interior de muzzarella extra. Seis porciones abundantes');
-INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion) VALUES (18,2,9,'Salame Rellena','Pizza de salame rellena con capa interior de muzzarella extra. Seis porciones abundantes');
+INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion,precio) VALUES (1,1,1,'Muzzarella Clasica','Muzzarella 8 porciones clasica',2970);
+INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion,precio) VALUES (2,1,2,'Napolitana Clasica','Tomate 8 porciones clasica',3300);
+INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion,precio) VALUES (3,1,3,'Rucula Clasica','Rucula 8 porciones clasica',3410);
+INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion,precio) VALUES (4,1,4,'Jamon y Morron Clasica','Jamon y morrón 8 porciones clasica',3520);
+INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion,precio) VALUES (5,1,5,'Huevo Clasica','Huevo 8 porciones  clasica',3630);
+INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion,precio) VALUES (6,1,6,'Palmitos Clasica','Palmitos 8 porciones clasica',3740);
+INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion,precio) VALUES (7,1,7,'Fugazza Clasica','Cebolla 8 porciones clasica',3850);
+INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion,precio) VALUES (8,1,8,'Salchicha Clasica','Salchicha 8 porciones clasica',3740);
+INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion,precio) VALUES (9,1,9,'Salame Clasica','Salame 8 porciones clasica',3267);
+INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion,precio) VALUES (10,2,1,'Muzzarella Rellena','Muzzarella 6 porciones muzzarella extra',3630);
+INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion,precio) VALUES (11,2,2,'Napolitana Rellena','Tomate 6 porciones muzzarella extra',3751);
+INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion,precio) VALUES (12,2,3,'Rucula Rellena','Rucula 6 porciones muzzarella extra',3872);
+INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion,precio) VALUES (13,2,4,'Jamon y Morron Rellena','Jamon y morrón 6 porciones muzzarella extra',3993);
+INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion,precio) VALUES (14,2,5,'Huevo Rellena','Huevo 6 porciones  muzzarella extra',4114);
+INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion,precio) VALUES (15,2,6,'Palmitos Rellena','Palmitos 6 porciones muzzarella extra',4235);
+INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion,precio) VALUES (16,2,7,'Fugazza Rellena','Cebolla 6 porciones muzzarella extra',4114);
+INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion,precio) VALUES (17,2,8,'Salchicha Rellena','Salchicha 6 porciones muzzarella extra',3595);
+INSERT INTO productos(id_producto,id_tipo_prepizza,id_sabor,nombre,descripcion,precio) VALUES (18,2,9,'Salame Rellena','Salame 6 porciones muzzarella extra',3993);
 
 -- (11) ACCESORIOS CANTIDAD
 
-INSERT INTO accesorios_cantidad(id_unique,id_insumo,cantidad) VALUES (1,23,1);
-INSERT INTO accesorios_cantidad(id_unique,id_insumo,cantidad) VALUES (2,24,0.002);
-INSERT INTO accesorios_cantidad(id_unique,id_insumo,cantidad) VALUES (3,25,0.005);
+INSERT INTO accesorios_cantidad(id_unique,id_insumo,cantidad) VALUES (1,22,1);
+INSERT INTO accesorios_cantidad(id_unique,id_insumo,cantidad) VALUES (2,23,0.002);
+INSERT INTO accesorios_cantidad(id_unique,id_insumo,cantidad) VALUES (3,24,0.005);
 
--- (12) ACTUALIZACIONES PRECIOS
+-- (12) ACTUALIZACIONES PRECIOS PRODUCTOS
 
-INSERT INTO actualizaciones_precios(id_actualizacion_precio,fecha) VALUES (1,'2022-11-01 00:00:00');
-INSERT INTO actualizaciones_precios(id_actualizacion_precio,fecha) VALUES (2,'2022-12-01 00:00:00');
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (1,'2022-11-01',1,2700,0);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (2,'2022-11-01',2,3000,0);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (3,'2022-11-01',3,3100,0);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (4,'2022-11-01',4,3200,0);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (5,'2022-11-01',5,3300,0);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (6,'2022-11-01',6,3400,0);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (7,'2022-11-01',7,3500,0);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (8,'2022-11-01',8,3400,0);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (9,'2022-11-01',9,2970,0);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (10,'2022-11-01',10,3300,0);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (11,'2022-11-01',11,3410,0);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (12,'2022-11-01',12,3520,0);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (13,'2022-11-01',13,3630,0);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (14,'2022-11-01',14,3740,0);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (15,'2022-11-01',15,3850,0);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (16,'2022-11-01',16,3740,0);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (17,'2022-11-01',17,3267,0);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (18,'2022-11-01',18,3630,0);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (19,'2022-12-01',1,2970,1);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (20,'2022-12-02',2,3300,1);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (21,'2022-12-03',3,3410,1);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (22,'2022-12-04',4,3520,1);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (23,'2022-12-05',5,3630,1);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (24,'2022-12-06',6,3740,1);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (25,'2022-12-07',7,3850,1);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (26,'2022-12-08',8,3740,1);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (27,'2022-12-09',9,3267,1);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (28,'2022-12-10',10,3630,1);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (29,'2022-12-11',11,3751,1);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (30,'2022-12-12',12,3872,1);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (31,'2022-12-13',13,3993,1);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (32,'2022-12-14',14,4114,1);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (33,'2022-12-15',15,4235,1);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (34,'2022-12-16',16,4114,1);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (35,'2022-12-17',17,3595,1);
+INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (36,'2022-12-18',18,3993,1);
 
--- (13) ACTUALIZACIONES PRECIOS PRODUCTOS
-
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (1,1,1,2700,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (2,1,2,3000,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (3,1,3,3100,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (4,1,4,3200,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (5,1,5,3300,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (6,1,6,3400,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (7,1,7,3500,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (8,1,8,3400,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (9,1,9,2970,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (10,1,10,3300,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (11,1,11,3410,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (12,1,12,3520,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (13,1,13,3630,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (14,1,14,3740,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (15,1,15,3850,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (16,1,16,3740,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (17,1,17,3267,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (18,1,18,3630,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (19,2,1,2970,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (20,2,2,3300,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (21,2,3,3410,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (22,2,4,3520,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (23,2,5,3630,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (24,2,6,3740,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (25,2,7,3850,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (26,2,8,3740,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (27,2,9,3267,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (28,2,10,3630,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (29,2,11,3751,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (30,2,12,3872,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (31,2,13,3993,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (32,2,14,4114,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (33,2,15,4235,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (34,2,16,4114,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (35,2,17,3595,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,id_actualizacion_precio,id_producto,nuevo_precio,es_precio_actual) VALUES (36,2,18,3993,1);
-
--- (14) PEDIDOS
+-- (13) PEDIDOS
 
 INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (1,56,'2022/11/03',NULL,0,NULL,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (2,30,'2022/11/04',NULL,0,NULL,1);
@@ -620,7 +610,7 @@ INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,e
 INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (99,43,'2022/12/20',NULL,25,NULL,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (100,50,'2022/12/20',NULL,0,NULL,1);
 
--- (15) PEDIDOS PRODUCTOS
+-- (14) PEDIDOS PRODUCTOS
 
 INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (1,1,5,2);
 INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (2,1,4,2);
@@ -866,7 +856,7 @@ INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (
 INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (242,100,5,2);
 INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (243,100,4,1);
 
--- (16) DELIVERYS
+-- (15) DELIVERYS
 
 INSERT INTO deliverys(id_delivery,nombre,telefono) VALUES (1,'Sofia Garcia','1122334455');
 INSERT INTO deliverys(id_delivery,nombre,telefono) VALUES (2,'Eliana Gomez','1198544567');
@@ -874,7 +864,7 @@ INSERT INTO deliverys(id_delivery,nombre,telefono) VALUES (3,'Santino Perez','11
 INSERT INTO deliverys(id_delivery,nombre,telefono) VALUES (4,'Tomas Sosa','1145851232');
 INSERT INTO deliverys(id_delivery,nombre,telefono) VALUES (5,'Lucia Martinez','1174855236');
 
--- (17) VEHICULOS
+-- (16) VEHICULOS
 
 insert into vehiculos (clase, descripcion, patente) values ('auto', 'Volskwagen Gol', 'IZK 043');
 insert into vehiculos (clase, descripcion, patente) values ('auto', 'Ford K', 'JKL 123');
@@ -883,7 +873,7 @@ insert into vehiculos (clase, descripcion, patente) values ('moto', 'Motomel 150
 insert into vehiculos (clase, descripcion, patente) values ('bici', 'Goldenbike Azul', NULL);
 insert into vehiculos (clase, descripcion, patente) values ('bici', 'Enjoy de Ride Roja', NULL);
 
--- (18) ENTREGAS
+-- (17) ENTREGAS
 
 INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (1,3,6,'2022/11/03','22:19:12');
 INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (2,2,5,'2022/11/04','23:31:12');
@@ -933,7 +923,7 @@ INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VA
 INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (46,3,5,'2022/12/17','20:52:48');
 INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (47,3,3,'2022/12/20','22:48:00');
 
--- (19) ENTREGAS PEDIDOS
+-- (18) ENTREGAS PEDIDOS
 
 INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (1,1,1);
 INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (2,2,2);
@@ -1035,4 +1025,5 @@ INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (97,46,97);
 INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (98,47,98);
 INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (99,47,99);
 INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (100,47,100);
+
 
