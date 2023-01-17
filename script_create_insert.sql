@@ -133,14 +133,13 @@ CREATE TABLE IF NOT EXISTS ACCESORIOS_CANTIDAD(
             ON UPDATE CASCADE
 );
 
--- #12
+-- #12 (Tabla historial)
 CREATE TABLE IF NOT EXISTS ACTUALIZACIONES_PRECIOS_PRODUCTOS(
-	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+	id_actualizacion INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	fecha DATE NOT NULL,
 	id_producto INT NOT NULL,
     nuevo_precio DECIMAL(9,2) NOT NULL,
-    es_precio_actual TINYINT NOT NULL DEFAULT 1,
-
+    
 	FOREIGN KEY (id_producto)
 		REFERENCES productos(id_producto)
 			ON DELETE CASCADE
@@ -229,6 +228,18 @@ CREATE TABLE IF NOT EXISTS ENTREGAS_PEDIDOS(
             ON UPDATE CASCADE
 );
 
+-- #19 (Tabla auditoria)
+
+CREATE TABLE auditoria_clientes (
+	id_auditoria INT PRIMARY KEY UNIQUE AUTO_INCREMENT,
+    id_cliente INT,
+    insertado_por varchar(100),
+    fecha_insercion datetime,
+    hora_insercion time,
+    actualizado_por varchar(100),
+    fecha_actualizacion datetime,
+    hora_actualizacion datetime
+);
 
 #   -----------------            INSERCION DE DATOS            ------------------------
 
@@ -470,42 +481,42 @@ INSERT INTO accesorios_cantidad(id_unique,id_insumo,cantidad) VALUES (3,24,0.005
 
 -- (12) ACTUALIZACIONES PRECIOS PRODUCTOS
 
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (1,'2022-11-01',1,2700,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (2,'2022-11-01',2,3000,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (3,'2022-11-01',3,3100,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (4,'2022-11-01',4,3200,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (5,'2022-11-01',5,3300,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (6,'2022-11-01',6,3400,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (7,'2022-11-01',7,3500,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (8,'2022-11-01',8,3400,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (9,'2022-11-01',9,2970,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (10,'2022-11-01',10,3300,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (11,'2022-11-01',11,3410,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (12,'2022-11-01',12,3520,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (13,'2022-11-01',13,3630,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (14,'2022-11-01',14,3740,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (15,'2022-11-01',15,3850,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (16,'2022-11-01',16,3740,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (17,'2022-11-01',17,3267,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (18,'2022-11-01',18,3630,0);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (19,'2022-12-01',1,2970,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (20,'2022-12-02',2,3300,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (21,'2022-12-03',3,3410,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (22,'2022-12-04',4,3520,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (23,'2022-12-05',5,3630,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (24,'2022-12-06',6,3740,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (25,'2022-12-07',7,3850,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (26,'2022-12-08',8,3740,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (27,'2022-12-09',9,3267,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (28,'2022-12-10',10,3630,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (29,'2022-12-11',11,3751,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (30,'2022-12-12',12,3872,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (31,'2022-12-13',13,3993,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (32,'2022-12-14',14,4114,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (33,'2022-12-15',15,4235,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (34,'2022-12-16',16,4114,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (35,'2022-12-17',17,3595,1);
-INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (36,'2022-12-18',18,3993,1);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (1,'2022-11-01',1,2700,0);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (2,'2022-11-01',2,3000,0);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (3,'2022-11-01',3,3100,0);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (4,'2022-11-01',4,3200,0);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (5,'2022-11-01',5,3300,0);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (6,'2022-11-01',6,3400,0);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (7,'2022-11-01',7,3500,0);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (8,'2022-11-01',8,3400,0);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (9,'2022-11-01',9,2970,0);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (10,'2022-11-01',10,3300,0);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (11,'2022-11-01',11,3410,0);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (12,'2022-11-01',12,3520,0);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (13,'2022-11-01',13,3630,0);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (14,'2022-11-01',14,3740,0);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (15,'2022-11-01',15,3850,0);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (16,'2022-11-01',16,3740,0);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (17,'2022-11-01',17,3267,0);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (18,'2022-11-01',18,3630,0);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (19,'2022-12-01',1,2970,1);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (20,'2022-12-02',2,3300,1);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (21,'2022-12-03',3,3410,1);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (22,'2022-12-04',4,3520,1);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (23,'2022-12-05',5,3630,1);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (24,'2022-12-06',6,3740,1);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (25,'2022-12-07',7,3850,1);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (26,'2022-12-08',8,3740,1);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (27,'2022-12-09',9,3267,1);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (28,'2022-12-10',10,3630,1);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (29,'2022-12-11',11,3751,1);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (30,'2022-12-12',12,3872,1);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (31,'2022-12-13',13,3993,1);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (32,'2022-12-14',14,4114,1);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (33,'2022-12-15',15,4235,1);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (34,'2022-12-16',16,4114,1);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (35,'2022-12-17',17,3595,1);
+# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (36,'2022-12-18',18,3993,1);
 
 -- (13) PEDIDOS
 
