@@ -1,245 +1,4 @@
-CREATE DATABASE IF NOT EXISTS pizzeria;
-
 USE pizzeria;
-
--- #1 
-CREATE TABLE IF NOT EXISTS CLIENTES(
-	id_cliente INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	nombre VARCHAR(50) NOT NULL,
-    direccion VARCHAR(120) NOT NULL,
-    telefono VARCHAR (20) NOT NULL
-);
-
--- #2
-CREATE TABLE IF NOT EXISTS INSUMOS(
-	id_insumo INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	nombre VARCHAR(50) NOT NULL,
-	unidad VARCHAR(30) NOT NULL,
-    tipo VARCHAR(15) NOT NULL,
-    costo DECIMAL
-);
-
--- #3
-CREATE TABLE IF NOT EXISTS PROVEEDORES(
-	id_proveedor INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(50) NOT NULL,
-    direccion VARCHAR(60) UNIQUE,
-    telefono VARCHAR(20) UNIQUE
-);
-
--- #4
-CREATE TABLE IF NOT EXISTS COMPRAS(
-	id_compra INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-    id_proveedor INT NOT NULL,
-    fecha DATETIME NOT NULL,
-    monto_total DECIMAL(9,2),
-	FOREIGN KEY (id_proveedor)
-		REFERENCES proveedores(id_proveedor)
-			ON DELETE CASCADE
-            ON UPDATE CASCADE
-);
-
--- #5
-CREATE TABLE IF NOT EXISTS COMPRAS_INSUMOS(
-	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	id_compra INT NOT NULL,
-    id_insumo INT NOT NULL,
-    cantidad DECIMAL(9,2) NOT NULL,
-    precio_x_unidad DECIMAL(9,2) NOT NULL,
-    CONSTRAINT UNIQUE(id_compra , id_insumo),
-	FOREIGN KEY (id_compra)
-		REFERENCES compras(id_compra)
-			ON DELETE CASCADE
-            ON UPDATE CASCADE,
-	FOREIGN KEY (id_insumo)
-		REFERENCES insumos(id_insumo)
-			ON DELETE CASCADE
-            ON UPDATE CASCADE
-);
-
--- #6
-CREATE TABLE IF NOT EXISTS TIPOS_PREPIZZAS(
-	id_tipo_prepizza INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	nombre_tipo VARCHAR(30) NOT NULL
-);
-
-
--- #7
-CREATE TABLE IF NOT EXISTS TIPOS_PREPIZZAS_INSUMOS(
-	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	id_tipo_prepizza INT NOT NULL,
-    id_insumo INT NOT NULL,
-    cantidad DECIMAL(9,5) NOT NULL,
-    CONSTRAINT UNIQUE(id_tipo_prepizza , id_insumo),
-    FOREIGN KEY (id_tipo_prepizza)
-		REFERENCES tipos_prepizzas(id_tipo_prepizza)
-			ON DELETE CASCADE
-            ON UPDATE CASCADE,
-	FOREIGN KEY (id_insumo)
-		REFERENCES insumos(id_insumo)
-			ON DELETE CASCADE
-            ON UPDATE CASCADE
-);
-
--- #8
-CREATE TABLE IF NOT EXISTS SABORES(
-	id_sabor INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(50)
-);
-
--- #9
-CREATE TABLE IF NOT EXISTS SABORES_INSUMOS(
-	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	id_sabor INT NOT NULL,
-    id_insumo INT NOT NULL,
-    cantidad DECIMAL(9,2) NOT NULL,
-	CONSTRAINT UNIQUE(id_sabor , id_insumo),
-    FOREIGN KEY (id_sabor)
-		REFERENCES sabores(id_sabor)
-			ON DELETE CASCADE
-            ON UPDATE CASCADE,
-	FOREIGN KEY (id_insumo)
-		REFERENCES insumos(id_insumo)
-			ON DELETE CASCADE
-            ON UPDATE CASCADE
-);
-
--- #10
-CREATE TABLE IF NOT EXISTS PRODUCTOS(
-	id_producto INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,	
-    id_tipo_prepizza INT NOT NULL,
-	id_sabor INT NOT NULL,
-    nombre VARCHAR(50) NOT NULL,
-    descripcion VARCHAR(120) NOT NULL,
-    precio INT,
-	FOREIGN KEY (id_tipo_prepizza)
-	REFERENCES tipos_prepizzas(id_tipo_prepizza)
-			ON DELETE CASCADE
-            ON UPDATE CASCADE,
-    FOREIGN KEY (id_sabor)
-		REFERENCES sabores(id_sabor)
-			ON DELETE CASCADE
-            ON UPDATE CASCADE
-);
-
--- #11
-CREATE TABLE IF NOT EXISTS ACCESORIOS_CANTIDAD(
-	id_unique INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    id_insumo INT NOT NULL,
-    cantidad DECIMAL(9,5),
-    FOREIGN KEY (id_insumo)
-		REFERENCES insumos(id_insumo)
-			ON DELETE CASCADE
-            ON UPDATE CASCADE
-);
-
--- #12 (Tabla historial)
-CREATE TABLE IF NOT EXISTS ACTUALIZACIONES_PRECIOS_PRODUCTOS(
-	id_actualizacion INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	fecha DATE NOT NULL,
-	id_producto INT NOT NULL,
-    nuevo_precio DECIMAL(9,2) NOT NULL,
-    
-	FOREIGN KEY (id_producto)
-		REFERENCES productos(id_producto)
-			ON DELETE CASCADE
-            ON UPDATE CASCADE
-);
-
--- #13
-CREATE TABLE IF NOT EXISTS PEDIDOS(
-	id_pedido INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-    id_cliente INT NOT NULL,
-	fecha DATETIME NOT NULL,
-    sub_total DECIMAL(9,2),
-    descuento DECIMAL(9,2) DEFAULT 0,
-    monto_final DECIMAL(9,2),
-	estado TINYINT NOT NULL DEFAULT 0,
-	FOREIGN KEY (id_cliente)
-		REFERENCES clientes(id_cliente)
-			ON DELETE CASCADE
-            ON UPDATE CASCADE
-);
-
--- #14
-CREATE TABLE IF NOT EXISTS PEDIDOS_PRODUCTOS(
-	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-    id_pedido INT NOT NULL,
-    id_producto INT NOT NULL,
-    cantidad INT NOT NULL,
-	CONSTRAINT UNIQUE(id_pedido , id_producto),
-    FOREIGN KEY (id_pedido)
-		REFERENCES pedidos(id_pedido)
-			ON DELETE CASCADE
-            ON UPDATE CASCADE,
-	FOREIGN KEY (id_producto)
-		REFERENCES productos(id_producto)
-			ON DELETE CASCADE
-            ON UPDATE CASCADE
-);
-
--- #15
-CREATE TABLE IF NOT EXISTS DELIVERYS(
-	id_delivery INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(50) NOT NULL,
-    telefono VARCHAR(20) NOT NULL UNIQUE
-    
-);
-
--- #16
-CREATE TABLE IF NOT EXISTS VEHICULOS(
-	id_vehiculo INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-    clase VARCHAR(20) NOT NULL,
-    descripcion VARCHAR(60) NOT NULL,
-	patente VARCHAR(20) UNIQUE
-);
-
--- #17
-CREATE TABLE IF NOT EXISTS ENTREGAS(
-	id_entrega INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	id_delivery INT NOT NULL,
-	id_vehiculo INT NOT NULL,
-    fecha DATETIME NOT NULL,
-    horario_salida TIME NOT NULL,
-    
-	FOREIGN KEY (id_vehiculo)
-		REFERENCES vehiculos(id_vehiculo)
-			ON DELETE CASCADE
-            ON UPDATE CASCADE,
-	FOREIGN KEY (id_delivery)
-		REFERENCES deliverys(id_delivery)
-			ON DELETE CASCADE
-            ON UPDATE CASCADE
-);
-
--- #18
-CREATE TABLE IF NOT EXISTS ENTREGAS_PEDIDOS(
-	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-	id_entrega INT NOT NULL,
-	id_pedido INT NOT NULL,
-    	CONSTRAINT UNIQUE(id_unique, id_pedido),
-	FOREIGN KEY (id_entrega)
-		REFERENCES entregas(id_entrega)
-			ON DELETE CASCADE
-            ON UPDATE CASCADE,
-	FOREIGN KEY (id_pedido)
-		REFERENCES pedidos(id_pedido)
-			ON DELETE CASCADE
-            ON UPDATE CASCADE
-);
-
--- #19 (Tabla auditoria)
-
-CREATE TABLE auditoria_clientes (
-	id_auditoria INT PRIMARY KEY UNIQUE AUTO_INCREMENT,
-    id_cliente INT,
-    insertado_por varchar(100),
-    fecha_insercion datetime,
-    hora_insercion time,
-    actualizado_por varchar(100),
-    fecha_actualizacion datetime,
-    hora_actualizacion datetime
-);
 
 #   -----------------            INSERCION DE DATOS            ------------------------
 
@@ -520,106 +279,106 @@ INSERT INTO accesorios_cantidad(id_unique,id_insumo,cantidad) VALUES (3,24,0.005
 
 -- (13) PEDIDOS
 
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (1,56,'2022/11/03',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (2,30,'2022/11/04',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (3,40,'2022/11/04',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (4,41,'2022/11/05',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (5,34,'2022/11/05',NULL,80,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (6,15,'2022/11/05',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (7,39,'2022/11/05',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (8,10,'2022/11/06',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (9,16,'2022/11/06',NULL,35,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (10,34,'2022/11/06',NULL,65,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (11,11,'2022/11/07',NULL,70,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (12,58,'2022/11/07',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (13,25,'2022/11/07',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (14,53,'2022/11/07',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (15,65,'2022/11/08',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (16,13,'2022/11/08',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (17,43,'2022/11/08',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (18,30,'2022/11/08',NULL,140,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (19,57,'2022/11/08',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (20,66,'2022/11/08',NULL,10,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (21,42,'2022/11/09',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (22,15,'2022/11/09',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (23,51,'2022/11/09',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (24,39,'2022/11/10',NULL,80,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (25,20,'2022/11/10',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (26,23,'2022/11/10',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (27,40,'2022/11/11',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (28,8,'2022/11/11',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (29,59,'2022/11/11',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (30,38,'2022/11/11',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (31,59,'2022/11/11',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (32,11,'2022/11/12',NULL,15,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (33,65,'2022/11/12',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (34,64,'2022/11/13',NULL,80,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (35,17,'2022/11/13',NULL,10,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (36,43,'2022/11/13',NULL,10,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (37,65,'2022/11/13',NULL,10,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (38,1,'2022/11/13',NULL,65,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (39,53,'2022/11/13',NULL,20,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (40,19,'2022/11/14',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (41,65,'2022/11/14',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (42,46,'2022/11/14',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (43,22,'2022/11/15',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (44,23,'2022/11/16',NULL,155,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (45,26,'2022/11/16',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (46,27,'2022/11/17',NULL,140,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (47,21,'2022/11/17',NULL,35,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (48,1,'2022/11/17',NULL,145,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (49,17,'2022/11/17',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (50,42,'2022/11/18',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (51,55,'2022/11/18',NULL,125,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (52,66,'2022/11/18',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (53,41,'2022/11/19',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (54,37,'2022/11/20',NULL,195,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (55,65,'2022/11/20',NULL,240,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (56,12,'2022/11/20',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (57,17,'2022/11/20',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (58,47,'2022/11/21',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (59,36,'2022/11/21',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (60,38,'2022/11/25',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (61,67,'2022/11/25',NULL,155,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (62,9,'2022/11/25',NULL,55,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (63,28,'2022/11/26',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (64,58,'2022/11/26',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (65,17,'2022/11/28',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (66,70,'2022/11/28',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (67,14,'2022/11/28',NULL,135,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (68,50,'2022/11/30',NULL,55,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (69,19,'2022/11/30',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (70,20,'2022/11/30',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (71,8,'2022/11/30',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (72,34,'2022/11/30',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (73,37,'2022/12/01',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (74,26,'2022/12/02',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (75,11,'2022/12/02',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (76,26,'2022/12/05',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (77,58,'2022/12/05',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (78,14,'2022/12/05',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (79,21,'2022/12/07',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (80,35,'2022/12/07',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (81,32,'2022/12/07',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (82,63,'2022/12/07',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (83,42,'2022/12/10',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (84,64,'2022/12/10',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (85,25,'2022/12/10',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (86,16,'2022/12/10',NULL,55,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (87,68,'2022/12/10',NULL,180,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (88,13,'2022/12/11',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (89,39,'2022/12/13',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (90,49,'2022/12/13',NULL,150,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (91,70,'2022/12/13',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (92,37,'2022/12/15',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (93,35,'2022/12/15',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (94,68,'2022/12/17',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (95,17,'2022/12/17',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (96,60,'2022/12/17',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (97,58,'2022/12/17',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (98,59,'2022/12/20',NULL,0,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (99,43,'2022/12/20',NULL,25,NULL,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha,sub_total,descuento,monto_final,estado) VALUES (100,50,'2022/12/20',NULL,0,NULL,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (1,56,'2022/11/03',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (2,30,'2022/11/04',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (3,40,'2022/11/04',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (4,41,'2022/11/05',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (5,34,'2022/11/05',80,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (6,15,'2022/11/05',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (7,39,'2022/11/05',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (8,10,'2022/11/06',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (9,16,'2022/11/06',35,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (10,34,'2022/11/06',65,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (11,11,'2022/11/07',70,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (12,58,'2022/11/07',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (13,25,'2022/11/07',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (14,53,'2022/11/07',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (15,65,'2022/11/08',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (16,13,'2022/11/08',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (17,43,'2022/11/08',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (18,30,'2022/11/08',140,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (19,57,'2022/11/08',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (20,66,'2022/11/08',10,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (21,42,'2022/11/09',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (22,15,'2022/11/09',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (23,51,'2022/11/09',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (24,39,'2022/11/10',80,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (25,20,'2022/11/10',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (26,23,'2022/11/10',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (27,40,'2022/11/11',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (28,8,'2022/11/11',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (29,59,'2022/11/11',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (30,38,'2022/11/11',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (31,59,'2022/11/11',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (32,11,'2022/11/12',15,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (33,65,'2022/11/12',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (34,64,'2022/11/13',80,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (35,17,'2022/11/13',10,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (36,43,'2022/11/13',10,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (37,65,'2022/11/13',10,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (38,1,'2022/11/13',65,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (39,53,'2022/11/13',20,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (40,19,'2022/11/14',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (41,65,'2022/11/14',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (42,46,'2022/11/14',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (43,22,'2022/11/15',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (44,23,'2022/11/16',155,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (45,26,'2022/11/16',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (46,27,'2022/11/17',140,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (47,21,'2022/11/17',35,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (48,1,'2022/11/17',145,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (49,17,'2022/11/17',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (50,42,'2022/11/18',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (51,55,'2022/11/18',125,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (52,66,'2022/11/18',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (53,41,'2022/11/19',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (54,37,'2022/11/20',195,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (55,65,'2022/11/20',240,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (56,12,'2022/11/20',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (57,17,'2022/11/20',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (58,47,'2022/11/21',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (59,36,'2022/11/21',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (60,38,'2022/11/25',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (61,67,'2022/11/25',155,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (62,9,'2022/11/25',55,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (63,28,'2022/11/26',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (64,58,'2022/11/26',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (65,17,'2022/11/28',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (66,70,'2022/11/28',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (67,14,'2022/11/28',135,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (68,50,'2022/11/30',55,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (69,19,'2022/11/30',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (70,20,'2022/11/30',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (71,8,'2022/11/30',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (72,34,'2022/11/30',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (73,37,'2022/12/01',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (74,26,'2022/12/02',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (75,11,'2022/12/02',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (76,26,'2022/12/05',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (77,58,'2022/12/05',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (78,14,'2022/12/05',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (79,21,'2022/12/07',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (80,35,'2022/12/07',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (81,32,'2022/12/07',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (82,63,'2022/12/07',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (83,42,'2022/12/10',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (84,64,'2022/12/10',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (85,25,'2022/12/10',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (86,16,'2022/12/10',55,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (87,68,'2022/12/10',180,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (88,13,'2022/12/11',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (89,39,'2022/12/13',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (90,49,'2022/12/13',150,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (91,70,'2022/12/13',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (92,37,'2022/12/15',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (93,35,'2022/12/15',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (94,68,'2022/12/17',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (95,17,'2022/12/17',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (96,60,'2022/12/17',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (97,58,'2022/12/17',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (98,59,'2022/12/20',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (99,43,'2022/12/20',25,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (100,50,'2022/12/20',0,1);
 
 -- (14) PEDIDOS PRODUCTOS
 
@@ -1036,5 +795,4 @@ INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (97,46,97);
 INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (98,47,98);
 INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (99,47,99);
 INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (100,47,100);
-
 

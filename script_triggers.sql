@@ -1,3 +1,5 @@
+USE pizzeria;
+
 # Una de las tablas en la que va a tener efecto el trigger es la de actualizaciones_precios_productos que ya la habia creado anteriormente
 # la cual contendra el historial de los precios de los productos
 
@@ -23,8 +25,14 @@ UPDATE auditoria_clientes
 	WHERE id_cliente = NEW.id_cliente;
 $$
 
-# Cada vez que se actualiza el precio de un producto, se registra la fecha el id_producto y el nuevo precio en la tabla actualizaciones_precios_productos
+# Cada vez que se inserta un nuevo producto, se registra la fecha el id_producto y el precio en la tabla actualizaciones_precios_productos
+CREATE TRIGGER `tr_insert_precios_productos`
+AFTER INSERT ON `productos`
+FOR EACH ROW
+INSERT INTO `actualizaciones_precios_productos` (fecha, id_producto, nuevo_precio) VALUES (CURRENT_DATE(), NEW.id_producto, NEW.precio);
+$$
 
+# Cada vez que se actualiza el precio de un producto, se registra la fecha el id_producto y el nuevo precio en la tabla actualizaciones_precios_productos
 CREATE TRIGGER `tr_update_precios_productos`
 AFTER UPDATE ON `productos`
 FOR EACH ROW
@@ -48,6 +56,8 @@ IF NEW.sub_total <> OLD.sub_total  OR NEW.descuento <> OLD.descuento THEN
 	SET NEW.monto_final = NEW.sub_total - NEW.descuento;
     END IF;
 $$
+
+DELIMITER ;
 
 # DROP TRIGGER tr_insert_clientes;
 # DROP TRIGGER tr_update_clientes;
