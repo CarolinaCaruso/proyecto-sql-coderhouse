@@ -77,30 +77,30 @@ insert into clientes (id_cliente, nombre, direccion, telefono) values (70, 'Nata
 
 -- (2) INSUMOS
 
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (1,'leche','litros',1,350);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (2,'huevos','unidades',1,20);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (3,'muzzarela','kg',1,2200);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (4,'jamon','kg',1,3650);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (5,'salchicha','paquetes de 6',1,230);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (6,'aceitunas','kg',1,1210);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (7,'salame','kg',1,210);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (8,'salsa de tomate','litros',1,370);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (9,'oregano','kg',1,2390);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (10,'sal','kg',1,270);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (11,'azucar','kg',1,450);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (12,'cebolla','kg',1,600);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (13,'tomate','kg',1,400);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (14,'morron','kg',1,200);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (15,'rucula','kg',1,890);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (16,'queso rallado','kg',1,3200);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (17,'levadura','kg',1,760);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (18,'longaniza','kg',1,4250);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (19,'harina','kg',1,320);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (20,'aceite de oliva','botella 1 litros',1,1050);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (21,'palmitos','lata de 800 gr',1,3600);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (22,'cajas','unidades',2,45);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (23,'mesita de plastico','kg',2,840);
-INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (24,'papel interior','kg',2,950);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (1,'leche','litros','ingrediente',350);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (2,'huevos','unidades','ingrediente',20);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (3,'muzzarela','kg','ingrediente',2200);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (4,'jamon','kg','ingrediente',3650);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (5,'salchicha','paquetes de 6','ingrediente',230);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (6,'aceitunas','kg','ingrediente',1210);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (7,'salame','kg','ingrediente',210);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (8,'salsa de tomate','litros','ingrediente',370);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (9,'oregano','kg','ingrediente',2390);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (10,'sal','kg','ingrediente',270);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (11,'azucar','kg','ingrediente',450);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (12,'cebolla','kg','ingrediente',600);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (13,'tomate','kg','ingrediente',400);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (14,'morron','kg','ingrediente',200);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (15,'rucula','kg','ingrediente',890);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (16,'queso rallado','kg','ingrediente',3200);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (17,'levadura','kg','ingrediente',760);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (18,'longaniza','kg','ingrediente',4250);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (19,'harina','kg','ingrediente',320);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (20,'aceite de oliva','botella 1 litros','ingrediente',1050);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (21,'palmitos','lata de 800 gr','ingrediente',3600);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (22,'cajas','unidades','accesorio',45);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (23,'mesita de plastico','kg','accesorio',840);
+INSERT INTO insumos(id_insumo,nombre,unidad,tipo,costo) VALUES (24,'papel interior','kg','accesorio',950);
 
 
 -- (3) PROVEEDORES
@@ -240,42 +240,7 @@ INSERT INTO accesorios_cantidad(id_unique,id_insumo,cantidad) VALUES (3,24,0.005
 
 -- (12) ACTUALIZACIONES PRECIOS PRODUCTOS
 
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (1,'2022-11-01',1,2700,0);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (2,'2022-11-01',2,3000,0);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (3,'2022-11-01',3,3100,0);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (4,'2022-11-01',4,3200,0);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (5,'2022-11-01',5,3300,0);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (6,'2022-11-01',6,3400,0);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (7,'2022-11-01',7,3500,0);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (8,'2022-11-01',8,3400,0);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (9,'2022-11-01',9,2970,0);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (10,'2022-11-01',10,3300,0);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (11,'2022-11-01',11,3410,0);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (12,'2022-11-01',12,3520,0);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (13,'2022-11-01',13,3630,0);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (14,'2022-11-01',14,3740,0);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (15,'2022-11-01',15,3850,0);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (16,'2022-11-01',16,3740,0);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (17,'2022-11-01',17,3267,0);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (18,'2022-11-01',18,3630,0);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (19,'2022-12-01',1,2970,1);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (20,'2022-12-02',2,3300,1);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (21,'2022-12-03',3,3410,1);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (22,'2022-12-04',4,3520,1);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (23,'2022-12-05',5,3630,1);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (24,'2022-12-06',6,3740,1);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (25,'2022-12-07',7,3850,1);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (26,'2022-12-08',8,3740,1);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (27,'2022-12-09',9,3267,1);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (28,'2022-12-10',10,3630,1);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (29,'2022-12-11',11,3751,1);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (30,'2022-12-12',12,3872,1);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (31,'2022-12-13',13,3993,1);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (32,'2022-12-14',14,4114,1);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (33,'2022-12-15',15,4235,1);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (34,'2022-12-16',16,4114,1);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (35,'2022-12-17',17,3595,1);
-# INSERT INTO actualizaciones_precios_productos(id_unique,fecha,id_producto,nuevo_precio,es_precio_actual) VALUES (36,'2022-12-18',18,3993,1);
+-- Esta tabla sera autocompletada a traves de triggers
 
 -- (13) PEDIDOS
 
@@ -374,11 +339,11 @@ INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (92,37
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (93,35,'2022/12/15',0,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (94,68,'2022/12/17',0,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (95,17,'2022/12/17',0,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (96,60,'2022/12/17',0,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (97,58,'2022/12/17',0,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (98,59,'2022/12/20',0,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (99,43,'2022/12/20',25,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (100,50,'2022/12/20',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (96,60,'2023/01/01',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (97,58,'2023/01/02',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (98,59,'2023/01/03',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (99,43,'2023/01/04',25,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (100,50,'2023/01/05',0,1);
 
 -- (14) PEDIDOS PRODUCTOS
 
@@ -690,8 +655,8 @@ INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VA
 INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (43,4,1,'2022/12/13','22:48:00');
 INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (44,4,3,'2022/12/15','21:21:36');
 INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (45,2,6,'2022/12/17','22:04:48');
-INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (46,3,5,'2022/12/17','20:52:48');
-INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (47,3,3,'2022/12/20','22:48:00');
+INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (46,1,5,'2023/01/03','20:52:48');
+INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (47,3,3,'2023/01/05','22:48:00');
 
 -- (18) ENTREGAS PEDIDOS
 
