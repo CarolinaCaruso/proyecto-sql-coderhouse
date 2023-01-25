@@ -7,15 +7,15 @@ START TRANSACTION;
 
 DELETE FROM clientes WHERE id_cliente = 2;
 DELETE FROM clientes WHERE id_cliente = 3;
-DELETE FROM clientes WHERE id_cliente = 4;
+DELETE FROM clientes WHERE id_cliente = 45;
 
 # ROLLBACK;
 COMMIT;
 
 # Sentencias para re-insertar los 3 registros eliminados
-# insert into clientes (id_cliente, nombre, direccion, telefono) values (2, 'Eward Hutcheon', '8 Dapin Trail', '6327596657');
-# insert into clientes (id_cliente, nombre, direccion, telefono) values (3, 'Alejandrina Luna', '5 Bashford Circle', '6311760244');
-# insert into clientes (id_cliente, nombre, direccion, telefono) values (4, 'Lilla Morde', '61 Darwin Pass', '1854785047');
+insert into clientes (id_cliente, nombre, direccion, telefono) values (2, 'Eward Hutcheon', '8 Dapin Trail', '6327596657');
+insert into clientes (id_cliente, nombre, direccion, telefono) values (3, 'Alejandrina Luna', '5 Bashford Circle', '6311760244');
+insert into clientes (id_cliente, nombre, direccion, telefono) values (45, 'Windy Sedman', '125 Mcbre Point', '1262849995');
 
 # Punto (2) TABLA PROVEEDORES
 START TRANSACTION;

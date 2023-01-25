@@ -48,7 +48,7 @@ insert into clientes (id_cliente, nombre, direccion, telefono) values (41, 'Well
 insert into clientes (id_cliente, nombre, direccion, telefono) values (42, 'Tera Tichelaar', '5 Rusk Avenue', '7021770091');
 insert into clientes (id_cliente, nombre, direccion, telefono) values (43, 'Helenelizabeth Jannaway', '07924 Susan Circle', '3826153522');
 insert into clientes (id_cliente, nombre, direccion, telefono) values (44, 'Abner Martel', '5 Calypso Park', '6884272210');
-insert into clientes (id_cliente, nombre, direccion, telefono) values (45, 'Windy Sedman', '125 Mcbrid_clientee Point', '1262849995');
+insert into clientes (id_cliente, nombre, direccion, telefono) values (45, 'Windy Sedman', '125 Mcbre Point', '1262849995');
 insert into clientes (id_cliente, nombre, direccion, telefono) values (46, 'Christyna Rothery', '42 6th Junction', '8199069411');
 insert into clientes (id_cliente, nombre, direccion, telefono) values (47, 'Kahaleel Chimienti', '3 School Alley', '7212144711');
 insert into clientes (id_cliente, nombre, direccion, telefono) values (48, 'Kassandra Plail', '91907 East Place', '1857298694');
