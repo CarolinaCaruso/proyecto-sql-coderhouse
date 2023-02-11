@@ -3,7 +3,7 @@ CREATE DATABASE IF NOT EXISTS pizzeria;
 USE pizzeria;
 
 -- #1 
-CREATE TABLE IF NOT EXISTS CLIENTES(
+CREATE TABLE IF NOT EXISTS clientes(
 	id_cliente INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	nombre VARCHAR(50) NOT NULL,
     direccion VARCHAR(120) NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS CLIENTES(
 );
 
 -- #2
-CREATE TABLE IF NOT EXISTS INSUMOS(
+CREATE TABLE IF NOT EXISTS insumos(
 	id_insumo INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	nombre VARCHAR(50) NOT NULL,
 	unidad VARCHAR(30) NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS INSUMOS(
 );
 
 -- #3
-CREATE TABLE IF NOT EXISTS PROVEEDORES(
+CREATE TABLE IF NOT EXISTS proveedores(
 	id_proveedor INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
     direccion VARCHAR(60) UNIQUE,
@@ -28,11 +28,11 @@ CREATE TABLE IF NOT EXISTS PROVEEDORES(
 );
 
 -- #4
-CREATE TABLE IF NOT EXISTS COMPRAS(
+CREATE TABLE IF NOT EXISTS compras(
 	id_compra INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
     id_proveedor INT NOT NULL,
-    fecha DATETIME NOT NULL,
-    monto_total DECIMAL(9,2),
+    fecha DATE NOT NULL,
+    monto_total DECIMAL(9,2) NOT NULL DEFAULT 0,
 	FOREIGN KEY (id_proveedor)
 		REFERENCES proveedores(id_proveedor)
 			ON DELETE CASCADE
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS COMPRAS(
 );
 
 -- #5
-CREATE TABLE IF NOT EXISTS COMPRAS_INSUMOS(
+CREATE TABLE IF NOT EXISTS compras_insumos(
 	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	id_compra INT NOT NULL,
     id_insumo INT NOT NULL,
@@ -58,13 +58,13 @@ CREATE TABLE IF NOT EXISTS COMPRAS_INSUMOS(
 );
 
 -- #6
-CREATE TABLE IF NOT EXISTS TIPOS_PREPIZZAS(
+CREATE TABLE IF NOT EXISTS tipos_prepizzas(
 	id_tipo_prepizza INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	nombre_tipo VARCHAR(30) NOT NULL
 );
 
 -- #7
-CREATE TABLE IF NOT EXISTS TIPOS_PREPIZZAS_INSUMOS(
+CREATE TABLE IF NOT EXISTS tipos_prepizzas_insumos(
 	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	id_tipo_prepizza INT NOT NULL,
     id_insumo INT NOT NULL,
@@ -81,13 +81,13 @@ CREATE TABLE IF NOT EXISTS TIPOS_PREPIZZAS_INSUMOS(
 );
 
 -- #8
-CREATE TABLE IF NOT EXISTS SABORES(
+CREATE TABLE IF NOT EXISTS sabores(
 	id_sabor INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50)
 );
 
 -- #9
-CREATE TABLE IF NOT EXISTS SABORES_INSUMOS(
+CREATE TABLE IF NOT EXISTS sabores_insumos(
 	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	id_sabor INT NOT NULL,
     id_insumo INT NOT NULL,
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS SABORES_INSUMOS(
 );
 
 -- #10
-CREATE TABLE IF NOT EXISTS PRODUCTOS(
+CREATE TABLE IF NOT EXISTS productos(
 	id_producto INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,	
     id_tipo_prepizza INT NOT NULL,
 	id_sabor INT NOT NULL,
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS PRODUCTOS(
 );
 
 -- #11
-CREATE TABLE IF NOT EXISTS ACCESORIOS_CANTIDAD(
+CREATE TABLE IF NOT EXISTS accesorios_cantidad(
 	id_unique INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     id_insumo INT NOT NULL,
     cantidad DECIMAL(9,5),
@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS ACCESORIOS_CANTIDAD(
 );
 
 -- #12 (Tabla historial que sera completada a traves de triggers)
-CREATE TABLE IF NOT EXISTS ACTUALIZACIONES_PRECIOS_PRODUCTOS(
+CREATE TABLE IF NOT EXISTS actualizaciones_precios_productos(
 	id_actualizacion INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	fecha DATE NOT NULL,
 	id_producto INT NOT NULL,
@@ -145,10 +145,10 @@ CREATE TABLE IF NOT EXISTS ACTUALIZACIONES_PRECIOS_PRODUCTOS(
 );
 
 -- #13
-CREATE TABLE IF NOT EXISTS PEDIDOS(
+CREATE TABLE IF NOT EXISTS pedidos(
 	id_pedido INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
     id_cliente INT NOT NULL,
-	fecha DATETIME NOT NULL,
+	fecha DATE NOT NULL,
     sub_total DECIMAL(9,2) NOT NULL DEFAULT 0,
     descuento DECIMAL(9,2) NOT NULL DEFAULT 0,
     monto_final DECIMAL(9,2) NOT NULL DEFAULT 0,
@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS PEDIDOS(
 );
 
 -- #14
-CREATE TABLE IF NOT EXISTS PEDIDOS_PRODUCTOS(
+CREATE TABLE IF NOT EXISTS pedidos_productos(
 	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
     id_pedido INT NOT NULL,
     id_producto INT NOT NULL,
@@ -177,7 +177,7 @@ CREATE TABLE IF NOT EXISTS PEDIDOS_PRODUCTOS(
 );
 
 -- #15
-CREATE TABLE IF NOT EXISTS DELIVERYS(
+CREATE TABLE IF NOT EXISTS deliverys(
 	id_delivery INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
     telefono VARCHAR(20) NOT NULL UNIQUE
@@ -185,7 +185,7 @@ CREATE TABLE IF NOT EXISTS DELIVERYS(
 );
 
 -- #16
-CREATE TABLE IF NOT EXISTS VEHICULOS(
+CREATE TABLE IF NOT EXISTS vehiculos(
 	id_vehiculo INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
     clase VARCHAR(20) NOT NULL,
     descripcion VARCHAR(60) NOT NULL,
@@ -193,11 +193,11 @@ CREATE TABLE IF NOT EXISTS VEHICULOS(
 );
 
 -- #17
-CREATE TABLE IF NOT EXISTS ENTREGAS(
+CREATE TABLE IF NOT EXISTS entregas(
 	id_entrega INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	id_delivery INT NOT NULL,
 	id_vehiculo INT NOT NULL,
-    fecha DATETIME NOT NULL,
+    fecha DATE NOT NULL,
     horario_salida TIME NOT NULL,
 	FOREIGN KEY (id_vehiculo)
 		REFERENCES vehiculos(id_vehiculo)
@@ -210,11 +210,11 @@ CREATE TABLE IF NOT EXISTS ENTREGAS(
 );
 
 -- #18
-CREATE TABLE IF NOT EXISTS ENTREGAS_PEDIDOS(
+CREATE TABLE IF NOT EXISTS entregas_pedidos(
 	id_unique INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
 	id_entrega INT NOT NULL,
 	id_pedido INT NOT NULL,
-    	CONSTRAINT UNIQUE(id_unique, id_pedido),
+	CONSTRAINT UNIQUE(id_unique, id_pedido),
 	FOREIGN KEY (id_entrega)
 		REFERENCES entregas(id_entrega)
 			ON DELETE CASCADE
@@ -228,20 +228,20 @@ CREATE TABLE IF NOT EXISTS ENTREGAS_PEDIDOS(
 -- #19 (Tabla auditoria que sera completada a traves de triggers)
 CREATE TABLE auditoria_clientes (
 	id_auditoria INT PRIMARY KEY UNIQUE AUTO_INCREMENT,
-    id_cliente INT,
+    id_cliente INT NOT NULL,
     insertado_por VARCHAR(100),
-    fecha_insercion DATE,
-    hora_insercion TIME,
+    fecha_insercion DATE NOT NULL,
+    hora_insercion TIME NOT NULL,
     actualizado_por VARCHAR(100),
-    fecha_actualizacion DATE,
-    hora_actualizacion TIME,
+    fecha_actualizacion DATE NOT NULL,
+    hora_actualizacion TIME NOT NULL,
     FOREIGN KEY (id_cliente)
 		REFERENCES clientes (id_cliente)
 			ON DELETE CASCADE
             ON UPDATE CASCADE
 );
 
-#  << -------------------------------- << VISTAS >> -------------------------------------- >>
+# ---------------------------------------- << VISTAS >> ------------------------------------------------
 
 DELIMITER $$
 
@@ -256,7 +256,8 @@ CREATE VIEW v_pizzas_x_mes AS
         pedidos_productos AS pp ON p.id_pedido = pp.id_pedido
     WHERE
         estado = 1
-    GROUP BY MONTH(fecha);    
+	GROUP BY YEAR(p.fecha), MONTH(p.fecha)
+	ORDER BY (p.fecha);
 $$
 
 # (2) Cantidad total de pizzas que pidio cada cliente ordenados de mayor a menor
@@ -301,20 +302,22 @@ CREATE VIEW v_ventas_x_producto AS
         productos AS p
             INNER JOIN
         pedidos_productos AS pp ON p.id_producto = pp.id_producto
-    GROUP BY p.id_producto;
+    GROUP BY p.id_producto
+    ORDER BY Cantidad;
 $$
 
  # (5) 	Facturacion mensual
  
  CREATE VIEW v_facturacion_mensual AS
     SELECT 
-        MONTH(fecha) AS 'Mes', SUM(monto_final) AS 'Total'
+        YEAR(fecha) AS 'Anio', MONTH(fecha) AS 'Mes', SUM(monto_final) AS 'Total'
     FROM
         pedidos
-    GROUP BY MONTH(fecha)
+    GROUP BY YEAR(fecha), MONTH(fecha)
+    ORDER BY fecha DESC
 $$
   
-# << --------------------------------  << FUNCIONES >> ----------------------------------------- >>
+# ------------------------------------  << FUNCIONES >> ------------------------------------------
 
 # (1) Funcion que calcula el costo total de una pizza, recibe el id de la pizza y retorna el costo
 
@@ -445,7 +448,7 @@ END;
 $$
 
 
-# << --------------------------------  << STORED PROCEDURES >>  ------------------------------------ >>
+# -------------------------------------  << STORED PROCEDURES >>  ----------------------------------------
 
 # (1)
 
@@ -481,13 +484,61 @@ BEGIN
     EXECUTE ejecutar_clausula;
     DEALLOCATE PREPARE ejecutar_clausula;
 END;
-$$ 
-
-# Los triggers los agregue aunque no lo pedia mas que nada porque hay tablas y campos que se completan automaticamente por los triggers
-# Entonces si se insertan los datos sin los triggers, por ejemplo el campo monto_final de la tabla pedidos quedaria vacio
-# y la vista facturacion_mensual se mostraria vacia
+$$
  
-# << ---------------------------------------  << TRIGGERS >>  ------------------------------------------- >>
+# -------------------------------------------  << TRIGGERS >>  --------------------------------------------------------
+
+# Este trigger es para verificar antes de insertar un nuevo insumo, que tenga como tipo "ingrediente" o "accesorio", ya que de lo contrario
+# se generarian inconsistencias por ejemplo al querer ejecutar la funcion de costo producto
+
+CREATE TRIGGER `tr_validar_insumos`
+BEFORE INSERT ON `insumos`
+FOR EACH ROW
+ IF NOT (NEW.tipo = 'ingrediente' OR  NEW.tipo = 'accesorio')
+            THEN
+                SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'El tipo debe ser ingrediente o accesorio';
+END IF;
+$$
+
+# Cada vez que se inserta un nuevo producto, se registra la fecha el id_producto y el precio en la tabla actualizaciones_precios_productos
+CREATE TRIGGER `tr_insert_precios_productos`
+AFTER INSERT ON `productos`
+FOR EACH ROW
+INSERT INTO `actualizaciones_precios_productos` (fecha, id_producto, nuevo_precio) VALUES (CURRENT_DATE(), NEW.id_producto, NEW.precio);
+$$
+
+# Cada vez que se actualiza el precio de un producto, se registra la fecha el id_producto y el nuevo precio en la tabla actualizaciones_precios_productos
+CREATE TRIGGER `tr_update_precios_productos`
+AFTER UPDATE ON `productos`
+FOR EACH ROW
+IF NEW.precio <> OLD.precio THEN
+	INSERT INTO `actualizaciones_precios_productos` (fecha, id_producto, nuevo_precio) VALUES (CURRENT_DATE(), NEW.id_producto, NEW.precio);
+    END IF;
+$$
+
+# El siguiente trigger es para calcula el subtotal del pedido, cada vez que se inserta un registro en la tabla pedidos productos
+CREATE TRIGGER `tr_sub_total_pedidos`
+AFTER INSERT ON `pedidos_productos`
+FOR EACH ROW
+	UPDATE `pedidos` SET sub_total = sub_total + (SELECT precio FROM productos WHERE id_producto = NEW.id_producto)*NEW.cantidad WHERE id_pedido = NEW.id_pedido;
+$$
+
+# El siguiente trigger calcula el monto final de cada pedido cada vez que se actualiza el subtotal o el descuento sub_total - descuento)
+CREATE TRIGGER `tr_monto_final_pedidos`
+BEFORE UPDATE ON `pedidos`
+FOR EACH ROW
+IF NEW.sub_total <> OLD.sub_total  OR NEW.descuento <> OLD.descuento THEN
+	SET NEW.monto_final = NEW.sub_total - NEW.descuento;
+    END IF;
+$$
+
+# El siguiente trigger calcula y actualiza el monto final de la compra, cada vez que se inserta un registro en la tabla compras_insumos
+CREATE TRIGGER `tr_total_compras`
+AFTER INSERT ON `compras_insumos`
+FOR EACH ROW
+	UPDATE `compras` SET monto_total = monto_total + NEW.precio_x_unidad*NEW.cantidad WHERE id_compra = NEW.id_compra;
+$$
 
 # Cada vez que se inserta un nuevo cliente, se registra en la tabla auditoria_clientes el id_cliente, la fecha y hora del registro, y el usuario
 CREATE TRIGGER `tr_insert_clientes`
@@ -507,34 +558,4 @@ UPDATE auditoria_clientes
 	WHERE id_cliente = NEW.id_cliente;
 $$
 
-# Cada vez que se inserta un nuevo producto, se registra la fecha el id_producto y el precio en la tabla actualizaciones_precios_productos
-CREATE TRIGGER `tr_insert_precios_productos`
-AFTER INSERT ON `productos`
-FOR EACH ROW
-INSERT INTO `actualizaciones_precios_productos` (fecha, id_producto, nuevo_precio) VALUES (CURRENT_DATE(), NEW.id_producto, NEW.precio);
-$$
-
-# Cada vez que se actualiza el precio de un producto, se registra la fecha el id_producto y el nuevo precio en la tabla actualizaciones_precios_productos
-CREATE TRIGGER `tr_update_precios_productos`
-AFTER UPDATE ON `productos`
-FOR EACH ROW
-IF NEW.precio <> OLD.precio THEN
-	INSERT INTO `actualizaciones_precios_productos` (fecha, id_producto, nuevo_precio) VALUES (CURRENT_DATE(), NEW.id_producto, NEW.precio);
-    END IF;
-$$
-
-# El siguiente trigger es para calcular y actualizar el subtotal del pedido, cada vez que se inserta un registro en la tabla pedidos productos
-CREATE TRIGGER `tr_sub_total_pedidos`
-AFTER INSERT ON `pedidos_productos`
-FOR EACH ROW
-	UPDATE `pedidos` SET sub_total = sub_total + (SELECT precio FROM productos WHERE id_producto = NEW.id_producto)*NEW.cantidad WHERE id_pedido = NEW.id_pedido;
-$$
-
-# El siguiente trigger es para calcular el monto final de cada pedido cada vez que se actualiza el subtotal o el descuento sub_total - descuento)
-CREATE TRIGGER `tr_monto_final_pedidos`
-BEFORE UPDATE ON `pedidos`
-FOR EACH ROW
-IF NEW.sub_total <> OLD.sub_total  OR NEW.descuento <> OLD.descuento THEN
-	SET NEW.monto_final = NEW.sub_total - NEW.descuento;
-    END IF;
-$$
+DELIMITER ;

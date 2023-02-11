@@ -1,7 +1,5 @@
 USE pizzeria;
 
-#   -----------------            INSERCION DE DATOS            ------------------------
-
 -- (1) CLIENTES
 
 insert into clientes (id_cliente, nombre, direccion, telefono) values (1, 'Elizabet Karpe', '50 Kropf Street', '5375141827');
@@ -112,13 +110,13 @@ INSERT INTO proveedores VALUES (NULL, 'Malena', 'Urquiza 123', '1167655890');
 
 -- (4) COMPRAS
 
-INSERT INTO compras(id_compra,id_proveedor,fecha) VALUES (1,1,'2022-11-01 12:00:00');
-INSERT INTO compras(id_compra,id_proveedor,fecha) VALUES (2,2,'2022-11-01 12:00:00');
-INSERT INTO compras(id_compra,id_proveedor,fecha) VALUES (3,3,'2022-11-01 12:00:00');
-INSERT INTO compras(id_compra,id_proveedor,fecha) VALUES (4,1,'2022-11-10 12:00:00');
-INSERT INTO compras(id_compra,id_proveedor,fecha) VALUES (5,2,'2022-11-10 12:00:00');
-INSERT INTO compras(id_compra,id_proveedor,fecha) VALUES (6,1,'2022-11-20 12:00:00');
-INSERT INTO compras(id_compra,id_proveedor,fecha) VALUES (7,4,'2022-12-01 12:00:00');
+INSERT INTO compras(id_compra,id_proveedor,fecha) VALUES (1,1,'2022-11-01');
+INSERT INTO compras(id_compra,id_proveedor,fecha) VALUES (2,2,'2022-11-01');
+INSERT INTO compras(id_compra,id_proveedor,fecha) VALUES (3,3,'2022-11-01');
+INSERT INTO compras(id_compra,id_proveedor,fecha) VALUES (4,1,'2022-11-10');
+INSERT INTO compras(id_compra,id_proveedor,fecha) VALUES (5,2,'2022-11-10');
+INSERT INTO compras(id_compra,id_proveedor,fecha) VALUES (6,1,'2022-11-20');
+INSERT INTO compras(id_compra,id_proveedor,fecha) VALUES (7,4,'2022-12-01');
 
 -- (5) COMPRAS INSUMOS
 
@@ -295,7 +293,7 @@ INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (48,1,
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (49,17,'2022/11/17',0,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (50,42,'2022/11/18',0,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (51,55,'2022/11/18',125,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (52,66,'2022/11/18',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (52,52,'2022/11/18',0,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (53,41,'2022/11/19',0,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (54,37,'2022/11/20',195,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (55,65,'2022/11/20',240,1);
@@ -316,13 +314,13 @@ INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (69,19
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (70,20,'2022/11/30',0,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (71,8,'2022/11/30',0,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (72,34,'2022/11/30',0,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (73,37,'2022/12/01',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (73,54,'2022/12/01',0,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (74,26,'2022/12/02',0,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (75,11,'2022/12/02',0,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (76,26,'2022/12/05',0,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (77,58,'2022/12/05',0,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (78,14,'2022/12/05',0,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (79,21,'2022/12/07',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (79,62,'2022/12/07',0,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (80,35,'2022/12/07',0,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (81,32,'2022/12/07',0,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (82,63,'2022/12/07',0,1);
@@ -340,10 +338,35 @@ INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (93,35
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (94,68,'2022/12/17',0,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (95,17,'2022/12/17',0,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (96,60,'2023/01/01',0,1);
-INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (97,58,'2023/01/02',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (97,61,'2023/01/02',0,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (98,59,'2023/01/03',0,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (99,43,'2023/01/04',25,1);
 INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (100,50,'2023/01/05',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (101,2,'2023/02/01',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (102,3,'2023/02/02',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (103,29,'2023/02/02',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (104,31,'2023/02/02',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (105,33,'2023/02/03',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (106,44,'2023/02/03',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (107,45,'2023/02/03',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (108,48,'2023/02/04',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (109,69,'2023/02/04',25,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (110,52,'2023/02/04',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (111,4,'2023/02/05',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (112,24,'2023/02/06',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (113,50,'2023/02/06',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (114,56,'2023/02/07',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (115,30,'2023/02/07',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (116,40,'2023/02/08',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (117,7,'2023/02/08',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (118,5,'2023/02/08',80,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (119,6,'2023/02/08',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (120,18,'2023/02/09',80,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (121,12,'2023/02/10',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (122,22,'2023/02/11',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (123,28,'2023/02/12',0,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (124,29,'2023/02/13',80,1);
+INSERT INTO pedidos(id_pedido,id_cliente,fecha, descuento, estado) VALUES (125,43,'2023/02/13',0,1);
 
 -- (14) PEDIDOS PRODUCTOS
 
@@ -590,6 +613,55 @@ INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (
 INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (241,98,14,2);
 INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (242,100,5,2);
 INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (243,100,4,1);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (244,101,16,1);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (245,102,8,1);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (246,102,11,2);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (247,103,15,1);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (248,103,1,3);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (249,104,1,3);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (250,104,9,1);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (251,104,8,2);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (252,105,15,3);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (253,105,17,2);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (254,106,11,2);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (255,107,5,2);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (256,108,9,2);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (257,108,15,2);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (258,108,5,3);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (259,108,4,2);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (260,109,17,2);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (261,109,11,2);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (262,110,15,3);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (263,110,16,1);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (264,110,10,1);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (265,111,10,2);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (266,111,5,3);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (267,112,9,2);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (268,112,2,1);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (269,112,6,2);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (270,113,12,3);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (271,113,8,1);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (272,114,18,3);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (273,115,5,1);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (274,116,11,1);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (275,117,13,2);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (276,117,15,3);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (277,117,1,2);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (278,118,4,1);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (279,118,17,1);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (280,120,17,1);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (281,120,1,1);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (282,120,7,2);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (283,121,18,1);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (284,121,16,3);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (285,121,12,3);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (286,123,6,1);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (287,123,9,1);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (288,123,13,2);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (289,124,15,3);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (290,125,2,1);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (291,125,5,2);
+INSERT INTO pedidos_productos(id_unique,id_pedido,id_producto,cantidad) VALUES (292,125,3,1);
 
 -- (15) DELIVERYS
 
@@ -657,6 +729,19 @@ INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VA
 INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (45,2,6,'2022/12/17','22:04:48');
 INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (46,1,5,'2023/01/03','20:52:48');
 INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (47,3,3,'2023/01/05','22:48:00');
+INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (48,3,6,'2023/02/01','23:45:36');
+INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (49,5,2,'2023/02/02','20:24:00');
+INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (50,2,6,'2023/02/03','22:33:36');
+INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (51,4,6,'2023/02/04','20:38:24');
+INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (52,1,4,'2023/02/05','22:19:12');
+INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (53,3,3,'2023/02/06','21:36:00');
+INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (54,3,2,'2023/02/07','20:38:24');
+INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (55,5,1,'2023/02/08','21:50:24');
+INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (56,2,4,'2023/02/09','22:19:12');
+INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (57,3,3,'2023/02/10','21:36:00');
+INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (58,3,2,'2023/02/11','20:38:24');
+INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (59,5,1,'2023/02/12','21:50:24');
+INSERT INTO entregas(id_entrega,id_delivery,id_vehiculo,fecha,horario_salida) VALUES (60,1,1,'2023/02/13','21:50:24');
 
 -- (18) ENTREGAS PEDIDOS
 
@@ -760,4 +845,28 @@ INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (97,46,97);
 INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (98,47,98);
 INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (99,47,99);
 INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (100,47,100);
-
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (101,48,101);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (102,49,102);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (103,49,103);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (104,49,104);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (105,50,105);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (106,50,106);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (107,50,107);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (108,50,108);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (109,51,109);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (110,51,110);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (111,51,111);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (112,52,113);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (113,53,113);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (114,53,114);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (115,54,115);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (116,45,116);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (117,55,117);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (118,56,118);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (119,56,119);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (120,56,120);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (121,57,121);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (122,57,122);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (123,58,123);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (124,59,124);
+INSERT INTO entregas_pedidos(id_unique,id_entrega,id_pedido) VALUES (125,60,125);
